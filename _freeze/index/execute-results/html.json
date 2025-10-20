@@ -1,0 +1,15 @@
+{
+  "hash": "be83dfedac76466d375a0ec98afb1c48",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"October Push\"\nauthor: \"Julian Bernado\"\n---\n\n\n\n\n\n\n\nI'm getting serious about trying to wrap up the work for this project by early November. But with the sparseness of my fully-focused sustained attention on a full-time basis, it's been a bit hard keeping it all in my head. I wanted to get everything down in a format that could serve like a textbook for finishing writing all the code and then writing the paper. I want to do it in this format rather than plain notes so that I can have a browsable, densely linked set of notes that may include typeset math or code.\n\n## Main pages\n* [where we're at](whereweat)\n* [Notation](notation)\n* [matchAhead procedure](matchAhead)\n* [Pimentel procedure](pimentel)\n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

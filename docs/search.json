@@ -7,11 +7,18 @@
     "text": "Now, let’s assume that we’ve done matching at two levels:\n\nMatched schools to schools\nMatched students to students within those schools\n\nAs such, let’s imagine a dataset indexed by school \\(i\\) and student \\(j\\) with four variables: * \\(T_{ij}\\): treatment indicator for student \\(j\\), uniform within an \\(i\\), in \\(\\{0,1\\}\\). * \\(Y_{ij}\\): actual outcome for student \\(j\\), within \\(\\mathbb{R}\\) * \\(\\hat{Y}_{ij}\\): estimated outcome for student \\(j\\), within \\(\\mathbb{R}\\) $ \\(S_{ij}\\): school, within \\([S]\\)\nThen, we want to estimate treatment by the following specification as in propertee:\n\n# output &lt;- lmitt(Y ~ 1,  data = df, specification = Treatment ~ block(student_match) + uoa(std_id), absorb = TRUE)\n# spec &lt;- obs_spec(Treatment ~ cluster(Group) + block(school_match), data = df)\n# output@StudySpecification &lt;- spec\n# print(summary(output))\n\nas debugged by Ben and Julian on September 22nd."
   },
   {
-    "objectID": "pimentel.html",
-    "href": "pimentel.html",
-    "title": "Pimentel’s procedure",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "October Push",
     "section": "",
-    "text": "Pimentel’s procedure at the school-by-school level is just a minimum cost flow between treatment and control along the estimated prognostic scores. The only particularity here will come in picking the number of controls to be matched from the number of treatment units. If we fix treatment school \\(t\\) and control school \\(c\\) with sizes \\(N_t\\) and \\(N_c\\) respectively, then we will take mean.controls = floor(N_c/N_t) with max.controls = U. From there, as in the matchAhead school-by-school procedure, we report:\n\n\\(B(t,c):\\ \\left|\\frac{N_t}{\\sum_{j=1}^{N_t} \\frac{1}{m(t,j)} \\sum_{(c,k):\\,((t,j),(c,k))\\in M^{'}}\\bigl(\\hat{Y}_{tj}-\\hat{Y}_{ck}\\bigr)}\\right|\\). This is an adequately-weighted within-group distance.\n\\(E(t,c):\\ \\left(\\sum_{j = 1}^{N_t} \\frac{2m(t,j)}{1 + m(t,j)}\\right)^{-1}\\). This is the reciprocal of the effective sample size of the resulting match."
+    "text": "I’m getting serious about trying to wrap up the work for this project by early November. But with the sparseness of my fully-focused sustained attention on a full-time basis, it’s been a bit hard keeping it all in my head. I wanted to get everything down in a format that could serve like a textbook for finishing writing all the code and then writing the paper. I want to do it in this format rather than plain notes so that I can have a browsable, densely linked set of notes that may include typeset math or code."
+  },
+  {
+    "objectID": "index.html#main-pages",
+    "href": "index.html#main-pages",
+    "title": "October Push",
+    "section": "Main pages",
+    "text": "Main pages\n\nwhere we’re at\nNotation\nmatchAhead procedure\nPimentel procedure"
   },
   {
     "objectID": "bias.html",
@@ -98,17 +105,10 @@
     "text": "Let \\(K&gt;0 \\in \\mathbb{R}\\) be a caliper. Then, let schools be indexed \\(i = 1, ..., S\\) and for each school \\(i\\), students be indexed \\(j = 1, ..., N_i\\). Let \\(N = \\sum_{i=1}^S N_i\\). Treatment is assigned at the school-level, so let \\(T_i \\in \\{0, 1\\}\\) indicate whether a school received treatment or not. Then, let \\(Y_{ij} \\in \\mathbb{R}\\) be the outcome for student \\((i,j)\\) and \\(\\hat{Y}_{ij} \\in \\mathbb{R}\\) be the estimated prognostic score for student \\((i,j)\\). Let \\(T \\subset [S]\\) be the set of treatment schools and \\(C = [S] \\setminus T\\) be the set of control schools. Let \\(S_{ij}\\) be the school that student \\((i,j)\\) attends. All future data products are functions of these objects.\nThere are four final data products:\n\n\\((\\ell_{M}, u_{M})\\): the confidence interval from the treatment effect estimation derived using the matchAhead procedure.\n\\((\\ell_{P}, u_{P})\\): the confidence interval from the treatment effect estimation derived using the Pimentel procedure.\n\\(\\{E_{ij}^{(M)}\\}_{T \\times C}\\) the set of times elapsed when matching treatment to control schools using the using the matchAhead procedure.\n\\(\\{E_{ij}^{(P)}\\}_{T \\times C}\\) the set of times elapsed when matching treatment to control schools using the using the Pimentel procedure."
   },
   {
-    "objectID": "push.html",
-    "href": "push.html",
-    "title": "October Push",
+    "objectID": "pimentel.html",
+    "href": "pimentel.html",
+    "title": "Pimentel’s procedure",
     "section": "",
-    "text": "I’m getting serious about trying to wrap up the work for this project by early November. But with the sparseness of my fully-focused sustained attention on a full-time basis, it’s been a bit hard keeping it all in my head. I wanted to get everything down in a format that could serve like a textbook for finishing writing all the code and then writing the paper. I want to do it in this format rather than plain notes so that I can have a browsable, densely linked set of notes that may include typeset math or code."
-  },
-  {
-    "objectID": "push.html#main-pages",
-    "href": "push.html#main-pages",
-    "title": "October Push",
-    "section": "Main pages",
-    "text": "Main pages\n\nwhere we’re at\nNotation\nmatchAhead procedure\nPimentel procedure"
+    "text": "Pimentel’s procedure at the school-by-school level is just a minimum cost flow between treatment and control along the estimated prognostic scores. The only particularity here will come in picking the number of controls to be matched from the number of treatment units. If we fix treatment school \\(t\\) and control school \\(c\\) with sizes \\(N_t\\) and \\(N_c\\) respectively, then we will take mean.controls = floor(N_c/N_t) with max.controls = U. From there, as in the matchAhead school-by-school procedure, we report:\n\n\\(B(t,c):\\ \\left|\\frac{N_t}{\\sum_{j=1}^{N_t} \\frac{1}{m(t,j)} \\sum_{(c,k):\\,((t,j),(c,k))\\in M^{'}}\\bigl(\\hat{Y}_{tj}-\\hat{Y}_{ck}\\bigr)}\\right|\\). This is an adequately-weighted within-group distance.\n\\(E(t,c):\\ \\left(\\sum_{j = 1}^{N_t} \\frac{2m(t,j)}{1 + m(t,j)}\\right)^{-1}\\). This is the reciprocal of the effective sample size of the resulting match."
   }
 ]
