@@ -1,0 +1,26 @@
+---
+title: "Treatment effect estimation"
+author: "Julian Bernado"
+---
+
+Now, let's assume that we've done matching at two levels:
+
+1. Matched schools to schools
+2. Matched students to students within those schools
+
+As such, let's imagine a dataset indexed by school $i$ and student $j$ with four variables:
+* $T_{ij}$: treatment indicator for student $j$, uniform within an $i$, in $\{0,1\}$.
+* $Y_{ij}$: actual outcome for student $j$, within $\mathbb{R}$
+* $\hat{Y}_{ij}$: estimated outcome for student $j$, within $\mathbb{R}$
+$ $S_{ij}$: school, within $[S]$
+
+Then, we want to estimate treatment by the following specification as in propertee:
+
+```{r}
+# output <- lmitt(Y ~ 1,  data = df, specification = Treatment ~ block(student_match) + uoa(std_id), absorb = TRUE)
+# spec <- obs_spec(Treatment ~ cluster(Group) + block(school_match), data = df)
+# output@StudySpecification <- spec
+# print(summary(output))
+```
+
+as debugged by Ben and Julian on September 22nd.

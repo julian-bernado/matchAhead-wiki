@@ -1,0 +1,114 @@
+[
+  {
+    "objectID": "treatment_effect.html",
+    "href": "treatment_effect.html",
+    "title": "Treatment effect estimation",
+    "section": "",
+    "text": "Now, let’s assume that we’ve done matching at two levels:\n\nMatched schools to schools\nMatched students to students within those schools\n\nAs such, let’s imagine a dataset indexed by school \\(i\\) and student \\(j\\) with four variables: * \\(T_{ij}\\): treatment indicator for student \\(j\\), uniform within an \\(i\\), in \\(\\{0,1\\}\\). * \\(Y_{ij}\\): actual outcome for student \\(j\\), within \\(\\mathbb{R}\\) * \\(\\hat{Y}_{ij}\\): estimated outcome for student \\(j\\), within \\(\\mathbb{R}\\) $ \\(S_{ij}\\): school, within \\([S]\\)\nThen, we want to estimate treatment by the following specification as in propertee:\n\n# output &lt;- lmitt(Y ~ 1,  data = df, specification = Treatment ~ block(student_match) + uoa(std_id), absorb = TRUE)\n# spec &lt;- obs_spec(Treatment ~ cluster(Group) + block(school_match), data = df)\n# output@StudySpecification &lt;- spec\n# print(summary(output))\n\nas debugged by Ben and Julian on September 22nd."
+  },
+  {
+    "objectID": "pimentel.html",
+    "href": "pimentel.html",
+    "title": "Pimentel’s procedure",
+    "section": "",
+    "text": "Pimentel’s procedure at the school-by-school level is just a minimum cost flow between treatment and control along the estimated prognostic scores. The only particularity here will come in picking the number of controls to be matched from the number of treatment units. If we fix treatment school \\(t\\) and control school \\(c\\) with sizes \\(N_t\\) and \\(N_c\\) respectively, then we will take mean.controls = floor(N_c/N_t) with max.controls = U. From there, as in the matchAhead school-by-school procedure, we report:\n\n\\(B(t,c):\\ \\left|\\frac{N_t}{\\sum_{j=1}^{N_t} \\frac{1}{m(t,j)} \\sum_{(c,k):\\,((t,j),(c,k))\\in M^{'}}\\bigl(\\hat{Y}_{tj}-\\hat{Y}_{ck}\\bigr)}\\right|\\). This is an adequately-weighted within-group distance.\n\\(E(t,c):\\ \\left(\\sum_{j = 1}^{N_t} \\frac{2m(t,j)}{1 + m(t,j)}\\right)^{-1}\\). This is the reciprocal of the effective sample size of the resulting match."
+  },
+  {
+    "objectID": "bias.html",
+    "href": "bias.html",
+    "title": "School-level bias distance",
+    "section": "",
+    "text": "Calculating the school-level bias distance happens at the same time that we calculate our “effective sample size” score in the school-by-school calculation."
+  },
+  {
+    "objectID": "whereweat.html",
+    "href": "whereweat.html",
+    "title": "where we’re at",
+    "section": "",
+    "text": "There are two main tasks that need to get done:\n\nWrite the code for treatment effect estimation\n\nRun the analysis on all of the data\nWrite the paper"
+  },
+  {
+    "objectID": "matchAhead.html",
+    "href": "matchAhead.html",
+    "title": "the matchAhead procedure",
+    "section": "",
+    "text": "The matchAhead procedure, from end-to-end, takes a hierarchical dataset \\(\\mathcal{D}\\) of schools and students and returns a set of matching distances between every treatment and control school in that dataset. It happens in a few steps:\n\nPrognostic models are fit on prior year’s data, resulting in outcome models.\nOutcome models are used to predict prognostic scores and calculate a caliper\nFor each pair of treatment and control schools, we do a school-by-school calculation:\n\nCalculate a “bias” score reflecting the closeness of the two schools’ prognostic scores\nCalculate an “effective sample size” score reflecting the effective sample size that would come from a match of these two schools\n\nWe take the geometric mean of these two scores to return the final matchAhead distance matrix\n\nThe method only takes a single researcher-supplied parameter: the largest permissible size of a student-level match. This procedure will be contrasted with the Pimentel procedure."
+  },
+  {
+    "objectID": "schoolbyschool.html",
+    "href": "schoolbyschool.html",
+    "title": "School-by-school calculation",
+    "section": "",
+    "text": "This calculation is at the core of the matchAhead procedure. Let us re-start the notation with treatment school \\(t\\) and control school \\(c\\) then consider treatment units indexed as \\(T = \\{(t,j) : 1 \\leq j \\leq N_t\\}\\) with \\(N_t\\) being the size of our treatment school. Then, let the control units be indexed as \\(C = \\{(c,j) : 1 \\leq j \\leq N_c\\}\\). Then, we notate our predicted prognostic scores as \\(\\hat{Y}_{ij}\\) and our caliper as \\(K\\). It has up to three steps and may terminate early depending on the results of earlier steps. Regardless of which step it terminated at, it should report three numbers:\nthe third’s calculation should be sufficiently clear, so I’ll describe how to attain the first and second numbers depending on steps in the matchAhead process."
+  },
+  {
+    "objectID": "schoolbyschool.html#check-e_1",
+    "href": "schoolbyschool.html#check-e_1",
+    "title": "School-by-school calculation",
+    "section": "Check \\(e_1\\)",
+    "text": "Check \\(e_1\\)\nWe define \\[\ne_1 = \\left|\\{(t, j) \\in T : |\\hat{Y}_{tj} - \\hat{Y}_{ck}| &lt; K \\text{ for some } 1 \\leq k \\leq N_c \\}\\right|\n\\]\nwhere \\(e_1\\) is the number of treatment units that have some control unit within a caliper along the estimated prognostic score."
+  },
+  {
+    "objectID": "schoolbyschool.html#if-e_1-0-report-no-match",
+    "href": "schoolbyschool.html#if-e_1-0-report-no-match",
+    "title": "School-by-school calculation",
+    "section": "If \\(e_1 = 0\\), report no match",
+    "text": "If \\(e_1 = 0\\), report no match\nIf there are no treated units within one caliper of any control unit, then we report an infinite distance for these two schools."
+  },
+  {
+    "objectID": "schoolbyschool.html#if-e_1-n_t-report-the-blurry-look",
+    "href": "schoolbyschool.html#if-e_1-n_t-report-the-blurry-look",
+    "title": "School-by-school calculation",
+    "section": "If \\(e_1 < N_t\\), report the blurry look",
+    "text": "If \\(e_1 &lt; N_t\\), report the blurry look\nLet \\(C^* = \\{(c, j) \\in C : |\\hat{Y}_{cj} - \\hat{Y}_{tk}| \\text{ for some }k = 1 ,..., N_t\\}\\) be the set of control units that have some treated units within a caliper. Then, we report:\n\n\\(B(t, c)\\): \\(\\left|\\text{mean}\\left(\\{\\hat{Y}_{tj}\\}_{j=1}^{N_t}\\right) - \\text{mean}\\left(\\{\\hat{Y}_{cj} : (c, j) \\in C^*\\}\\right)\\right|^{-1}\\)\n\\(E(t,c)\\): \\(\\frac{N_t}{e_1}\\)"
+  },
+  {
+    "objectID": "schoolbyschool.html#if-e_1-n_t-check-e_2",
+    "href": "schoolbyschool.html#if-e_1-n_t-check-e_2",
+    "title": "School-by-school calculation",
+    "section": "If \\(e_1 = N_t\\), check \\(e_2\\)",
+    "text": "If \\(e_1 = N_t\\), check \\(e_2\\)\nAt this point, we now start to think of the school-by-school calculation as a matching problem whose solution is rendered by performing a maximum flow calculation. As such, we imagine a 0-1 caliper distance where the distance between treatment unit \\(j\\) and control unit \\(k\\) is defined as:\n\\[\n\\mathbf{1}\\left(\\left|\\hat{Y}_{tj} - \\hat{Y}_{ck}\\right| &lt; K\\right)\n\\]\nwhere we’re just tracking whether or not the two units are within a caliper of one another. Then, performing a pair matching between \\(T\\) and \\(C\\) along this distance is equivalent to performing a maximum flow calculation on the relevant network. This maximum flow, which we’ll notate as \\(M\\) will be a collection of pairs of treated and control units \\(((t, j), (c, k)) \\in T \\times C\\). Then, we define\n\\[\ne_2 = |M|\n\\]\nwhich, since we’re doing a pair matching, will be exactly the number of treated units that ended up being matched under this distance."
+  },
+  {
+    "objectID": "schoolbyschool.html#if-e_2-n_t-report-the-cloudy-look",
+    "href": "schoolbyschool.html#if-e_2-n_t-report-the-cloudy-look",
+    "title": "School-by-school calculation",
+    "section": "If \\(e_2 < N_t\\), report the cloudy look",
+    "text": "If \\(e_2 &lt; N_t\\), report the cloudy look\nLet \\(C^\\dagger = \\{(c, j) : ((t,k), (c,j)) \\in M \\text{ for some }k = 1, ..., N_t\\}\\) be the subset of the controls that was matched under \\(M\\). Then, we report\n\n\\(B(t, c)\\): \\(\\left|\\frac{e_2}{\\sum_{((t,j), (c,k)) \\in M} \\hat{Y}_{tj} - \\hat{Y}_{ck}}\\right|\\). This is the average distance within pair matches.\n\\(E(t,c)\\): \\(\\frac{1}{e_2}\\). This is the reciprocal of the number of matches formed as well as the inverse of the effective sample size."
+  },
+  {
+    "objectID": "schoolbyschool.html#if-e_2-n_t-check-e_3",
+    "href": "schoolbyschool.html#if-e_2-n_t-check-e_3",
+    "title": "School-by-school calculation",
+    "section": "If \\(e_2 = N_t\\), check \\(e_3\\)",
+    "text": "If \\(e_2 = N_t\\), check \\(e_3\\)\nIf we have that each of our treated units can be matched in non-overlapping pairs to control units, then we check what would happen if we loosened the maximum number of controls in a match to be \\(U\\). Then, by using the same 0-1 distance specification but loosening the matching structure, we result in the maximum flow match \\(M' \\subset T \\times C\\) where a treated unit may now appear up to \\(U\\) times."
+  },
+  {
+    "objectID": "schoolbyschool.html#report-the-clear-look",
+    "href": "schoolbyschool.html#report-the-clear-look",
+    "title": "School-by-school calculation",
+    "section": "Report the clear look",
+    "text": "Report the clear look\nWe now report the same things we would in the case where we didn’t see \\(e_2\\), although now accounting for the new matching structure. For a given treatment unit \\((t, j)  \\in T\\), let \\(m(t,j)\\) be the number of controls matched to \\((t,j)\\). Then,\n\n\\(B(t,c):\\ \\left|\\frac{e_3}{\\sum_{j=1}^{N_t} \\frac{1}{m(t,j)} \\sum_{(c,k):\\,((t,j),(c,k))\\in M^{'}}\\bigl(\\hat{Y}_{tj}-\\hat{Y}_{ck}\\bigr)}\\right|\\). This is an adequately-weighted within-group distance.\n\\(E(t,c):\\ \\left(\\sum_{j = 1}^{N_t} \\frac{2m(t,j)}{1 + m(t,j)}\\right)^{-1}\\). This is the reciprocal of the effective sample size\n\nFor a final distance, we report the geometric mean of the two distances: \\(D_{tc} = \\sqrt{B(t,c)E(t,c)}\\) along with the total time elapsed \\(W_{tc}\\). The whole thing is summarized in the following graphic:"
+  },
+  {
+    "objectID": "notation.html",
+    "href": "notation.html",
+    "title": "Notation",
+    "section": "",
+    "text": "Let \\(K&gt;0 \\in \\mathbb{R}\\) be a caliper. Then, let schools be indexed \\(i = 1, ..., S\\) and for each school \\(i\\), students be indexed \\(j = 1, ..., N_i\\). Let \\(N = \\sum_{i=1}^S N_i\\). Treatment is assigned at the school-level, so let \\(T_i \\in \\{0, 1\\}\\) indicate whether a school received treatment or not. Then, let \\(Y_{ij} \\in \\mathbb{R}\\) be the outcome for student \\((i,j)\\) and \\(\\hat{Y}_{ij} \\in \\mathbb{R}\\) be the estimated prognostic score for student \\((i,j)\\). Let \\(T \\subset [S]\\) be the set of treatment schools and \\(C = [S] \\setminus T\\) be the set of control schools. Let \\(S_{ij}\\) be the school that student \\((i,j)\\) attends. All future data products are functions of these objects.\nThere are four final data products:\n\n\\((\\ell_{M}, u_{M})\\): the confidence interval from the treatment effect estimation derived using the matchAhead procedure.\n\\((\\ell_{P}, u_{P})\\): the confidence interval from the treatment effect estimation derived using the Pimentel procedure.\n\\(\\{E_{ij}^{(M)}\\}_{T \\times C}\\) the set of times elapsed when matching treatment to control schools using the using the matchAhead procedure.\n\\(\\{E_{ij}^{(P)}\\}_{T \\times C}\\) the set of times elapsed when matching treatment to control schools using the using the Pimentel procedure."
+  },
+  {
+    "objectID": "push.html",
+    "href": "push.html",
+    "title": "October Push",
+    "section": "",
+    "text": "I’m getting serious about trying to wrap up the work for this project by early November. But with the sparseness of my fully-focused sustained attention on a full-time basis, it’s been a bit hard keeping it all in my head. I wanted to get everything down in a format that could serve like a textbook for finishing writing all the code and then writing the paper. I want to do it in this format rather than plain notes so that I can have a browsable, densely linked set of notes that may include typeset math or code."
+  },
+  {
+    "objectID": "push.html#main-pages",
+    "href": "push.html#main-pages",
+    "title": "October Push",
+    "section": "Main pages",
+    "text": "Main pages\n\nwhere we’re at\nNotation\nmatchAhead procedure\nPimentel procedure"
+  }
+]

@@ -1,0 +1,27 @@
+project:
+  type: website       # html browsing; we'll also render pdfs
+  output-dir: docs    # html now goes to docs/ for GitHub Pages
+
+website:
+  title: "matchAhead-wiki"
+  site-url: https://julian-bernado.github.io/matchAhead-wiki/
+
+# optional: turn on pandoc wikilinks if you want to keep [[...]] syntax
+# from: markdown+wikilinks_title_after_pipe+wikilinks_title_before_pipe
+
+# build both formats by default
+format:
+  html:
+    toc: true
+  pdf:
+    # keep it plain so LaTeX is easy to satisfy on new machines
+    number-sections: false
+    toc: false
+
+# make links format-aware
+filters:
+  - link-format.lua
+
+# reproducible r execution defaults (knitr auto-detected on {r} chunks)
+execute:
+  freeze: auto

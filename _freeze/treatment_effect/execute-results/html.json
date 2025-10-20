@@ -1,0 +1,15 @@
+{
+  "hash": "f47d204152f1dbf6999612492fb5e05f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Treatment effect estimation\"\nauthor: \"Julian Bernado\"\n---\n\nNow, let's assume that we've done matching at two levels:\n\n1. Matched schools to schools\n2. Matched students to students within those schools\n\nAs such, let's imagine a dataset indexed by school $i$ and student $j$ with four variables:\n* $T_{ij}$: treatment indicator for student $j$, uniform within an $i$, in $\\{0,1\\}$.\n* $Y_{ij}$: actual outcome for student $j$, within $\\mathbb{R}$\n* $\\hat{Y}_{ij}$: estimated outcome for student $j$, within $\\mathbb{R}$\n$ $S_{ij}$: school, within $[S]$\n\nThen, we want to estimate treatment by the following specification as in propertee:\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# output <- lmitt(Y ~ 1,  data = df, specification = Treatment ~ block(student_match) + uoa(std_id), absorb = TRUE)\n# spec <- obs_spec(Treatment ~ cluster(Group) + block(school_match), data = df)\n# output@StudySpecification <- spec\n# print(summary(output))\n```\n:::\n\n\nas debugged by Ben and Julian on September 22nd.",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

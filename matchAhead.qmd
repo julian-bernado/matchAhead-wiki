@@ -1,0 +1,15 @@
+---
+title: "the matchAhead procedure"
+author: "julian bernado"
+---
+
+The matchAhead procedure, from end-to-end, takes a hierarchical dataset $\mathcal{D}$ of schools and students and returns a set of matching distances between every treatment and control school in that dataset. It happens in a few steps:  
+
+- [Prognostic models are fit on prior year's data](model_fitting), resulting in [outcome models](outcome_models).
+- Outcome models are used to [predict prognostic scores](progscores) and [calculate a caliper](caliper)
+- For each pair of treatment and control schools, we do a [school-by-school calculation](schoolbyschool):
+  - Calculate a "bias" score reflecting the closeness of the two schools' prognostic scores
+  - Calculate an "effective sample size" score reflecting the effective sample size that would come from a match of these two schools
+- We take the geometric mean of these two scores to return the final [matchAhead distance matrix](matchAhead_distances)
+
+The method only takes a single researcher-supplied parameter: the largest permissible size of a student-level match. This procedure will be contrasted with the [Pimentel procedure](pimentel). 

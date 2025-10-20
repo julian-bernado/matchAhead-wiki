@@ -1,0 +1,9 @@
+---
+title: "Pimentel's procedure"
+author: "Julian Bernado"
+---
+
+Pimentel's procedure at the school-by-school level is just a minimum cost flow between treatment and control along the estimated prognostic scores. The only particularity here will come in picking the number of controls to be matched from the number of treatment units. If we fix treatment school $t$ and control school $c$ with sizes $N_t$ and $N_c$ respectively, then we will take `mean.controls = floor(N_c/N_t)` with `max.controls = U`. From there, as in the [matchAhead school-by-school procedure](schoolbyschool), we report:
+
+1. $B(t,c):\ \left|\frac{N_t}{\sum_{j=1}^{N_t} \frac{1}{m(t,j)} \sum_{(c,k):\,((t,j),(c,k))\in M^{'}}\bigl(\hat{Y}_{tj}-\hat{Y}_{ck}\bigr)}\right|$. This is an adequately-weighted within-group distance.
+2. $E(t,c):\ \left(\sum_{j = 1}^{N_t} \frac{2m(t,j)}{1 + m(t,j)}\right)^{-1}$. This is the reciprocal of the effective sample size of the resulting match.

@@ -1,0 +1,9 @@
+---
+title: "where we're at"
+author: "Julian Bernado"
+---
+There are two main tasks that need to get done:  
+
+1. Write the [code](treatment_effect_code) for [treatment effect estimation](treatment_effect)  
+2. [Run the analysis on all of the data](fullrun)
+2. [Write the paper](paper)

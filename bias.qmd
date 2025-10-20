@@ -1,0 +1,6 @@
+---
+title: "School-level bias distance"
+author: "Julian Bernado"
+---
+
+Calculating the school-level bias distance happens at the same time that we calculate our ["effective sample size" score](ess) in the [school-by-school calculation](schoolbyschool).

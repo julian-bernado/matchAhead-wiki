@@ -1,0 +1,39 @@
+---
+title: "October Push"
+author: "Julian Bernado"
+---
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+set.seed(1)
+```
+
+```{r}
+#| label: libraries
+#| include: false
+pkgs <- c("rmarkdown", "readr", "dplyr")
+
+missing <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]
+if (length(missing)) install.packages(missing)
+
+invisible(lapply(pkgs, library, character.only = TRUE))
+```
+
+```{r}
+#| label: data
+#| include: false
+df <- read_csv("data/dummy.csv")
+```
+
+I'm getting serious about trying to wrap up the work for this project by early November. But with the sparseness of my fully-focused sustained attention on a full-time basis, it's been a bit hard keeping it all in my head. I wanted to get everything down in a format that could serve like a textbook for finishing writing all the code and then writing the paper. I want to do it in this format rather than plain notes so that I can have a browsable, densely linked set of notes that may include typeset math or code.
+
+## Main pages
+* [where we're at](whereweat)
+* [Notation](notation)
+* [matchAhead procedure](matchAhead)
+* [Pimentel procedure](pimentel)
+
+
+

@@ -1,0 +1,4 @@
+---
+title: "Outcome models"
+author: "Julian Bernado"
+---

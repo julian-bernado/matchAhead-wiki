@@ -1,0 +1,16 @@
+---
+title: "Notation"
+author: "Julian Bernado"
+---
+
+Let $K>0 \in \mathbb{R}$ be a caliper. Then, let schools be indexed $i = 1, ..., S$ and for each school $i$, students be indexed $j = 1, ..., N_i$. Let $N = \sum_{i=1}^S N_i$. Treatment is assigned at the school-level, so let $T_i \in \{0, 1\}$ indicate whether a school received treatment or not. Then, let $Y_{ij} \in \mathbb{R}$ be the outcome for student $(i,j)$ and $\hat{Y}_{ij} \in \mathbb{R}$ be the estimated prognostic score for student $(i,j)$. Let $T \subset [S]$ be the set of treatment schools and $C = [S] \setminus T$ be the set of control schools. Let $S_{ij}$ be the school that student $(i,j)$ attends. All future data products are functions of these objects.
+
+There are four final data products:  
+
+1. $(\ell_{M}, u_{M})$: the confidence interval from the [treatment effect estimation](treatment_effect) derived using the [matchAhead procedure](matchAhead).  
+
+2. $(\ell_{P}, u_{P})$: the confidence interval from the [treatment effect estimation](treatment_effect) derived using the [Pimentel procedure](pimentel).  
+
+3. $\{E_{ij}^{(M)}\}_{T \times C}$ the set of times elapsed when matching treatment to control schools using the using the [matchAhead procedure](matchAhead).  
+
+4. $\{E_{ij}^{(P)}\}_{T \times C}$ the set of times elapsed when matching treatment to control schools using the using the [Pimentel procedure](pimentel).
